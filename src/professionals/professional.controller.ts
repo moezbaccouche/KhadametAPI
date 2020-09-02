@@ -26,8 +26,8 @@ export class ProfessionalsController {
   }
 
   @Post()
-  create(@Body() newClient: Professional): Promise<Professional> {
-    return this.professionalsService.create(newClient);
+  create(@Body() newProfessional: Professional): Promise<Professional> {
+    return this.professionalsService.create(newProfessional);
   }
 
   @Delete(':id')

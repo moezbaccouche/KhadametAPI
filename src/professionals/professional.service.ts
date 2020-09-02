@@ -18,9 +18,9 @@ export class ProfessionalsService {
     return await this.professionalModel.findOne({ _id: id });
   }
 
-  async create(client: Professional): Promise<Professional> {
-    const newClient = new this.professionalModel(client);
-    return await newClient.save();
+  async create(professional: Professional): Promise<Professional> {
+    const newProfessional = new this.professionalModel(professional);
+    return await newProfessional.save();
   }
 
   async delete(id: string): Promise<Professional> {
