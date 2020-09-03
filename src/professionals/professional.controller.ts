@@ -49,4 +49,14 @@ export class ProfessionalsController {
   search(@Param('searchString') searchString: string): Promise<Professional[]> {
     return this.professionalsService.search(searchString);
   }
+
+  @Post('login')
+  login(
+    @Body() credentials: { email: string; password: string },
+  ): Promise<string> {
+    return this.professionalsService.login(
+      credentials.email,
+      credentials.password,
+    );
+  }
 }

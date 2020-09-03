@@ -6,13 +6,21 @@ import { ClientsModule } from './clients/clients.module';
 import { ProfessionalsModule } from './professionals/professional.module';
 import config from './config/keys';
 import { RequestsModule } from './requests/request.module';
+import { ConfigModule } from '@nestjs/config';
+import { ReviewsModule } from './reviews/review.module';
+import { ProfessionalSkillsModule } from './professionalSkills/professionalSkills.module';
+import { SkillsModule } from './skills/skill.module';
 
 @Module({
   imports: [
     ClientsModule,
     ProfessionalsModule,
     RequestsModule,
+    ReviewsModule,
+    ProfessionalSkillsModule,
+    SkillsModule,
     MongooseModule.forRoot(config.MongoURI),
+    ConfigModule.forRoot(),
   ],
   controllers: [AppController],
   providers: [AppService],

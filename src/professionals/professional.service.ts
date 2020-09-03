@@ -2,12 +2,15 @@ import { Injectable } from '@nestjs/common';
 import { Professional } from './professional.interface';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import * as bcrypt from 'bcrypt';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class ProfessionalsService {
   constructor(
     @InjectModel('Professional')
     private readonly professionalModel: Model<Professional>,
+    private readonly jwtService: JwtService,
   ) {}
 
   async findAll(): Promise<Professional[]> {
@@ -19,7 +22,10 @@ export class ProfessionalsService {
   }
 
   async create(professional: Professional): Promise<Professional> {
-    const newProfessional = new this.professionalModel(professional);
+    const encryptedPassword = await bcrypt.hash(professional.password, 10);
+    const professionalToAdd = { ...professional };
+    professionalToAdd.password = encryptedPassword;
+    const newProfessional = new this.professionalModel(professionalToAdd);
     return await newProfessional.save();
   }
 
@@ -37,7 +43,23 @@ export class ProfessionalsService {
     const found = await this.professionalModel.find({
       name: { $regex: searchString, $options: 'i' },
     });
-    console.log(found);
     return found;
+  }
+
+  async login(email: string, password: string): Promise<string> {
+    const professional = await this.professionalModel.findOne({ email: email });
+
+    const passwordMatches = await bcrypt.compare(
+      password,
+      professional.password,
+    );
+    if (professional && passwordMatches) {
+      return this.generateJWT(professional);
+    }
+    return '';
+  }
+
+  generateJWT(payload: Professional): Promise<string> {
+    return this.jwtService.signAsync({ professional: payload });
   }
 }
