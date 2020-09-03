@@ -6,6 +6,8 @@ import {
   Body,
   Delete,
   Put,
+  Query,
+  Req,
 } from '@nestjs/common';
 import { ProfessionalsService } from './professional.service';
 import { Professional } from './professional.interface';
@@ -41,5 +43,10 @@ export class ProfessionalsController {
     @Body() updateProfessional: Professional,
   ): Promise<Professional> {
     return this.professionalsService.update(id, updateProfessional);
+  }
+
+  @Get('/search/:searchString')
+  search(@Param('searchString') searchString: string): Promise<Professional[]> {
+    return this.professionalsService.search(searchString);
   }
 }

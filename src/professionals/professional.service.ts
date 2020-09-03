@@ -32,4 +32,12 @@ export class ProfessionalsService {
       new: true,
     });
   }
+
+  async search(searchString: string): Promise<Professional[]> {
+    const found = await this.professionalModel.find({
+      name: { $regex: searchString, $options: 'i' },
+    });
+    console.log(found);
+    return found;
+  }
 }
