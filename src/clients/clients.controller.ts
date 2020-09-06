@@ -25,6 +25,11 @@ export class ClientsController {
     return this.clientsService.findOne(id);
   }
 
+  @Get('/email/:email')
+  findOneByEmail(@Param('email') email: string): Promise<boolean> {
+    return this.clientsService.exists(email);
+  }
+
   @Post()
   create(@Body() newClient: Client): Promise<Client> {
     return this.clientsService.create(newClient);

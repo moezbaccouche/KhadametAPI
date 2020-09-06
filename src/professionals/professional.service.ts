@@ -21,6 +21,14 @@ export class ProfessionalsService {
     return await this.professionalModel.findOne({ _id: id });
   }
 
+  async exists(email: string): Promise<boolean> {
+    const professional = await this.professionalModel.findOne({ email: email });
+    if (professional) {
+      return true;
+    }
+    return false;
+  }
+
   async create(professional: Professional): Promise<Professional> {
     const encryptedPassword = await bcrypt.hash(professional.password, 10);
     const professionalToAdd = { ...professional };

@@ -12,19 +12,29 @@ import {
 import { ProfessionalsService } from './professional.service';
 import { Professional } from './professional.interface';
 import { response } from 'express';
+import { ProfessionalDto } from './dto/professional.dto';
 
 @Controller('professionals')
 export class ProfessionalsController {
   constructor(private readonly professionalsService: ProfessionalsService) {}
 
   @Get('')
-  findAll(): Promise<Professional[]> {
-    return this.professionalsService.findAll();
+  findAll(): Promise<ProfessionalDto[]> {
+    //this.professionalsService.findAll().then(value => value);
+    console.log('REACHED');
+    return new Promise((resolve, reject) => {
+      resolve([new ProfessionalDto('dazda', 'dazda', ['dazda'], 1)]);
+    });
   }
 
   @Get(':id')
   findOne(@Param('id') id: string): Promise<Professional> {
     return this.professionalsService.findOne(id);
+  }
+
+  @Get('/email/:email')
+  findOneByEmail(@Param('email') email: string): { exists: boolean } {
+    return { exists: true };
   }
 
   @Post()

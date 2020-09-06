@@ -17,6 +17,14 @@ export class ClientsService {
     return await this.clientModel.findOne({ _id: id });
   }
 
+  async exists(email: string): Promise<boolean> {
+    const client = await this.clientModel.findOne({ email: email });
+    if (client) {
+      return true;
+    }
+    return false;
+  }
+
   async create(client: Client): Promise<Client> {
     const newClient = new this.clientModel(client);
     return await newClient.save();
