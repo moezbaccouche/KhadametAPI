@@ -19,12 +19,8 @@ export class ProfessionalsController {
   constructor(private readonly professionalsService: ProfessionalsService) {}
 
   @Get('')
-  findAll(): Promise<ProfessionalDto[]> {
-    //this.professionalsService.findAll().then(value => value);
-    console.log('REACHED');
-    return new Promise((resolve, reject) => {
-      resolve([new ProfessionalDto('dazda', 'dazda', ['dazda'], 1)]);
-    });
+  findAll(): Promise<Professional[]> {
+    return this.professionalsService.findAll();
   }
 
   @Get(':id')
@@ -33,8 +29,8 @@ export class ProfessionalsController {
   }
 
   @Get('/email/:email')
-  findOneByEmail(@Param('email') email: string): { exists: boolean } {
-    return { exists: true };
+  findOneByEmail(@Param('email') email: string): Promise<boolean> {
+    return this.professionalsService.exists(email);
   }
 
   @Post()

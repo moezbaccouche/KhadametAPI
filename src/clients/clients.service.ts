@@ -2,6 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { Client } from './client.interface';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import * as bcrypt from 'bcrypt';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class ClientsService {
@@ -14,10 +16,12 @@ export class ClientsService {
   }
 
   async findOne(id: string): Promise<Client> {
+    console.log(id);
     return await this.clientModel.findOne({ _id: id });
   }
 
   async exists(email: string): Promise<boolean> {
+    console.log(email);
     const client = await this.clientModel.findOne({ email: email });
     if (client) {
       return true;
@@ -26,7 +30,10 @@ export class ClientsService {
   }
 
   async create(client: Client): Promise<Client> {
-    const newClient = new this.clientModel(client);
+    const encryptedPassword = await bcrypt.hash(client.password, 10);
+    const clientToAdd = { ...client };
+    clientToAdd.password = encryptedPassword;
+    const newClient = new this.clientModel(clientToAdd);
     return await newClient.save();
   }
 

@@ -27,6 +27,18 @@ export class ProfessionalSkillsService {
     return await newProfessionalSkill.save();
   }
 
+  async createMany(
+    professionalSkills: ProfessionalSkill[],
+    professionalId: string,
+  ): Promise<ProfessionalSkill[]> {
+    professionalSkills.map(skill => {
+      skill.professionalId = professionalId;
+      skill.skillId = skill.id;
+    });
+
+    return await this.professionalSkillModel.insertMany(professionalSkills);
+  }
+
   async delete(id: string): Promise<ProfessionalSkill> {
     return await this.professionalSkillModel.findByIdAndRemove(id);
   }
