@@ -43,4 +43,24 @@ export class UsersController {
   update(@Param('id') id: string, @Body() updateUser: User): Promise<User> {
     return this.usersService.update(id, updateUser);
   }
+
+  @Get('/search/:searchString')
+  search(@Param('searchString') searchString: string): Promise<User[]> {
+    return this.usersService.search(searchString);
+  }
+
+  @Post('login')
+  async login(
+    @Body() credentials: { email: string; password: string },
+  ): Promise<{ token: string; correctCredentials: boolean }> {
+    console.log(credentials);
+    const token = await this.usersService.login(
+      credentials.email,
+      credentials.password,
+    );
+    if (token) {
+      return { token: token, correctCredentials: true };
+    }
+    return { token: null, correctCredentials: false };
+  }
 }

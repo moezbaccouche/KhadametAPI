@@ -7,7 +7,10 @@ import { User } from './user.interface';
 
 @Injectable()
 export class UsersService {
-  constructor(@InjectModel('User') private readonly userModel: Model<User>) {}
+  constructor(
+    @InjectModel('User') private readonly userModel: Model<User>,
+    private readonly jwtService: JwtService,
+  ) {}
 
   async findAll(): Promise<User[]> {
     return await this.userModel.find();
@@ -41,5 +44,24 @@ export class UsersService {
 
   async update(id: string, user: User): Promise<User> {
     return await this.userModel.findByIdAndUpdate(id, user, { new: true });
+  }
+
+  async search(searchString: string): Promise<User[]> {
+    const found = await this.userModel.find({
+      name: { $regex: searchString, $options: 'i' },
+    });
+    return found;
+  }
+
+  async login(email: string, password: string): Promise<string> {
+    const user = await this.userModel.findOne({ email: email });
+    if (user && (await bcrypt.compare(password, user.password))) {
+      return this.generateJWT(user);
+    }
+    return null;
+  }
+
+  generateJWT(payload: User): Promise<string> {
+    return this.jwtService.signAsync({ professional: payload });
   }
 }
