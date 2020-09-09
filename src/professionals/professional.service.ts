@@ -4,6 +4,11 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
+import { ProfessionalSkill } from 'src/professionalSkills/professionalSkills.interface';
+import { ProfessionalSkillsService } from 'src/professionalSkills/professionalSkills.service';
+import { SearchedProfessionalDto } from './dto/searchedProfessional.dto';
+import { SkillRatingsService } from 'src/skillRatings/skillRatings.service';
+import { SkillRating } from 'src/skillRatings/skillRatings.interface';
 
 @Injectable()
 export class ProfessionalsService {
@@ -11,6 +16,8 @@ export class ProfessionalsService {
     @InjectModel('Professional')
     private readonly professionalModel: Model<Professional>,
     private readonly jwtService: JwtService,
+    private readonly professionalSkillsService: ProfessionalSkillsService,
+    private readonly skillRatingsService: SkillRatingsService,
   ) {}
 
   async findAll(): Promise<Professional[]> {
@@ -18,6 +25,7 @@ export class ProfessionalsService {
   }
 
   async findOne(id: string): Promise<Professional> {
+    console.log('ID', id);
     return await this.professionalModel.findOne({ _id: id });
   }
 
@@ -70,4 +78,43 @@ export class ProfessionalsService {
   generateJWT(payload: Professional): Promise<string> {
     return this.jwtService.signAsync({ professional: payload });
   }
+
+  // async findProfessionalsBySkill(
+  //   skillId: string,
+  // ): Promise<SearchedProfessionalDto[]> {
+  //   //Get all the professionalsSkills (id, salary, proId, skillId) of the searched skill
+  //   const professionalSkills: ProfessionalSkill[] = await this.professionalSkillsService.findBySkill(
+  //     skillId,
+  //   );
+
+  //   let searchedProfessionals: SearchedProfessionalDto[] = [];
+
+  //   professionalSkills.map(async pSkill => {
+  //     const professional = await this.findOne(pSkill.professionalId);
+
+  //     //Get the skill ratings for the professional
+  //     const skillRatings = await this.skillRatingsService.findSkillRatingsForProfessional(
+  //       pSkill.skillId,
+  //       pSkill.professionalId,
+  //     );
+
+  //     //Sum all the ratings and divide them by the number of ratings
+  //     let sum = 0;
+
+  //     skillRatings.map(skillRating => {
+  //       sum += skillRating.rating;
+  //     });
+
+  //     let skillRating = (sum / skillRatings.length).toFixed(1);
+  //     searchedProfessionals.push(
+  //       new SearchedProfessionalDto(
+  //         professional.name,
+  //         professional.picture,
+  //         parseFloat(skillRating),
+  //         pSkill.salary,
+  //       ),
+  //     );
+  //   });
+  //   return searchedProfessionals;
+  // }
 }

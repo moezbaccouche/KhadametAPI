@@ -11,6 +11,7 @@ import { ReviewsModule } from './reviews/review.module';
 import { ProfessionalSkillsModule } from './professionalSkills/professionalSkills.module';
 import { SkillsModule } from './skills/skill.module';
 import { UsersModule } from './users/user.module';
+import { SkillRatingsModule } from './skillRatings/skillRatings.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { UsersModule } from './users/user.module';
     ReviewsModule,
     ProfessionalSkillsModule,
     SkillsModule,
+    SkillRatingsModule,
     MongooseModule.forRoot(config.MongoURI),
     ConfigModule.forRoot(),
   ],

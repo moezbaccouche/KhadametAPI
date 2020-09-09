@@ -53,7 +53,7 @@ export class UsersController {
   async login(
     @Body() credentials: { email: string; password: string },
   ): Promise<{ token: string; correctCredentials: boolean }> {
-    console.log(credentials);
+    console.log(credentials.email);
     const token = await this.usersService.login(
       credentials.email,
       credentials.password,
@@ -62,5 +62,10 @@ export class UsersController {
       return { token: token, correctCredentials: true };
     }
     return { token: null, correctCredentials: false };
+  }
+
+  @Get('skill/:id')
+  findProfessionalsBySkill(@Param('id') skillId: string): Promise<any> {
+    return this.usersService.findProfessionalsBySkill(skillId);
   }
 }

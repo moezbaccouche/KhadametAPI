@@ -13,6 +13,7 @@ import { ProfessionalsService } from './professional.service';
 import { Professional } from './professional.interface';
 import { response } from 'express';
 import { ProfessionalDto } from './dto/professional.dto';
+import { SearchedProfessionalDto } from './dto/searchedProfessional.dto';
 
 @Controller('professionals')
 export class ProfessionalsController {
@@ -65,4 +66,16 @@ export class ProfessionalsController {
       credentials.password,
     );
   }
+
+  // @Get('skill/:id')
+  // findProfessionalsBySkill(
+  //   @Param('id') skillId: string,
+  // ): Promise<SearchedProfessionalDto[]> {
+  //   return this.professionalsService.findProfessionalsBySkill(skillId);
+  // }
+
+  // @Get('skill/:id')
+  // findProfessionalsBySkill(@Param('id') skillId: string): void {
+  //   this.professionalsService.findProfessionalsBySkillV2(skillId);
+  // }
 }
