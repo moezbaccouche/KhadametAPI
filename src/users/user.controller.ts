@@ -44,9 +44,12 @@ export class UsersController {
     return this.usersService.update(id, updateUser);
   }
 
-  @Get('/search/:searchString')
-  search(@Param('searchString') searchString: string): Promise<User[]> {
-    return this.usersService.search(searchString);
+  @Get('/search/:searchString/:loggedUserId')
+  search(
+    @Param('searchString') searchString: string,
+    @Param('loggedUserId') loggedUserId: string,
+  ): Promise<User[]> {
+    return this.usersService.search(searchString, loggedUserId);
   }
 
   @Post('login')

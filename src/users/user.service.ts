@@ -52,11 +52,18 @@ export class UsersService {
     return await this.userModel.findByIdAndUpdate(id, user, { new: true });
   }
 
-  async search(searchString: string): Promise<User[]> {
-    const found = await this.userModel.find({
-      name: { $regex: searchString, $options: 'i' },
-    });
-    return found;
+  async search(searchString: string, loggedUserId: string): Promise<User[]> {
+    const foundProfessionals: User[] = await this.userModel
+      .find({
+        name: { $regex: searchString, $options: 'i' },
+        role: 2,
+      })
+      .sort({ name: 'ascending' });
+
+    const arrayWithoutLoggedUser = foundProfessionals.filter(
+      user => user.id !== loggedUserId,
+    );
+    return arrayWithoutLoggedUser;
   }
 
   async login(email: string, password: string): Promise<string> {
@@ -98,6 +105,7 @@ export class UsersService {
 
         arr.push(
           new SearchedProfessionalDto(
+            professional.id,
             professional.name,
             professional.picture,
             overall === null ? 0 : parseFloat(overall),
@@ -108,8 +116,11 @@ export class UsersService {
         return arr;
       }),
     );
-
-    return promises[0];
+    console.log(promises[0]);
+    if (promises[0]) {
+      return promises[0];
+    }
+    return [];
   }
 
   async calculateSkillRating(skillRatings: SkillRating[]): Promise<any> {
