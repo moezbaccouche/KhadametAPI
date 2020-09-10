@@ -9,6 +9,8 @@ import { ProfessionalSkillSchema } from 'src/professionalSkills/professionalSkil
 import { SkillRatingSchema } from 'src/skillRatings/skillRatings.schema';
 import { ProfessionalSkillsService } from 'src/professionalSkills/professionalSkills.service';
 import { SkillRatingsService } from 'src/skillRatings/skillRatings.service';
+import { ReviewSchema } from 'src/reviews/review.schema';
+import { ReviewsService } from 'src/reviews/review.service';
 
 @Module({
   imports: [
@@ -16,6 +18,7 @@ import { SkillRatingsService } from 'src/skillRatings/skillRatings.service';
       { name: 'User', schema: UserSchema },
       { name: 'ProfessionalSkills', schema: ProfessionalSkillSchema },
       { name: 'SkillRating', schema: SkillRatingSchema },
+      { name: 'Review', schema: ReviewSchema },
     ]),
     JwtModule.registerAsync({
       imports: [ConfigModule],

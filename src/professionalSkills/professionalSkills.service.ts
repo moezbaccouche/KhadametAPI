@@ -59,10 +59,17 @@ export class ProfessionalSkillsService {
     );
   }
 
-  @Get('skill:id')
+  @Get('skill/:id')
   async findBySkill(
     @Param('id') skillId: string,
   ): Promise<ProfessionalSkill[]> {
     return await this.professionalSkillModel.find({ skillId });
+  }
+
+  @Get('professional/:id')
+  async findByProfessional(
+    @Param('id') professionalId: string,
+  ): Promise<ProfessionalSkill[]> {
+    return await this.professionalSkillModel.find({ professionalId });
   }
 }

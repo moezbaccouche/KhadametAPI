@@ -2,6 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { Review } from './review.interface';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { UsersService } from 'src/users/user.service';
+import { User } from 'src/users/user.interface';
+import { ReviewDto } from './DTOs/review.dto';
 
 @Injectable()
 export class ReviewsService {

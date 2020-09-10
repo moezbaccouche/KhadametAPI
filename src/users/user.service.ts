@@ -8,12 +8,18 @@ import { ProfessionalSkillsService } from 'src/professionalSkills/professionalSk
 import { SkillRatingsService } from 'src/skillRatings/skillRatings.service';
 import { SearchedProfessionalDto } from 'src/professionals/dto/searchedProfessional.dto';
 import { SkillRating } from 'src/skillRatings/skillRatings.interface';
+import { UserRole } from './user.roles';
+import { ProfessionalForProfileDto } from './DTOs/ProfessionalForProfile.dto';
+import { SkillForProfileDto } from 'src/skills/DTOs/skillForProfile.dto';
+import { ReviewsService } from 'src/reviews/review.service';
+import { Review } from 'src/reviews/review.interface';
+import { ReviewDto } from 'src/reviews/DTOs/review.dto';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectModel('User') private readonly userModel: Model<User>,
-
+    @InjectModel('Review') private readonly reviewModel: Model<Review>,
     private readonly jwtService: JwtService,
     private readonly professionalSkillsService: ProfessionalSkillsService,
     private readonly skillRatingsService: SkillRatingsService,
@@ -25,6 +31,61 @@ export class UsersService {
 
   async findOne(id: string): Promise<User> {
     return await this.userModel.findOne({ _id: id });
+  }
+
+  //The next function must be optimized
+  async findProfessional(id: string): Promise<ProfessionalForProfileDto> {
+    const professional: User = await this.userModel.findOne({
+      _id: id,
+      role: UserRole.PROFESSIONAL,
+    });
+
+    const professionalSkills = await this.professionalSkillsService.findByProfessional(
+      id,
+    );
+
+    const reviews = await this.findReviewsForProfessional(id);
+    console.log(reviews);
+
+    const skillsToReturn: SkillForProfileDto[] = [];
+    const promises = await Promise.all(
+      professionalSkills.map(async pSkill => {
+        const skillRatings = await this.skillRatingsService.findSkillRatingsForProfessional(
+          pSkill.skillId,
+          pSkill.professionalId,
+        );
+
+        console.log('SKILL RATINGS', skillRatings);
+
+        let sum;
+        let overall = null;
+        if (skillRatings.length !== 0) {
+          sum = await this.calculateSkillRating(skillRatings);
+          overall = (sum / skillRatings.length).toFixed(1);
+        }
+
+        const skill = new SkillForProfileDto(
+          pSkill.skillId,
+          parseFloat(overall !== null ? overall : 0),
+        );
+        skillsToReturn.push(skill);
+        return skillsToReturn;
+      }),
+    );
+
+    const professionalToReturn = new ProfessionalForProfileDto(
+      professional.id,
+      professional.name,
+      professional.picture,
+      professional.address,
+      professional.phone,
+      professional.email,
+      this.calculateAge(professional.dob),
+      reviews,
+      skillsToReturn,
+    );
+
+    return professionalToReturn;
   }
 
   async exists(email: string): Promise<boolean> {
@@ -131,5 +192,37 @@ export class UsersService {
     return new Promise((resolve, reject) => {
       resolve(sum);
     });
+  }
+
+  private calculateAge(dob: Date): number {
+    let ageDate = new Date(Date.now() - dob.getTime());
+    return Math.abs(ageDate.getFullYear() - 1970);
+  }
+
+  async findReviewsForProfessional(professionalId: string): Promise<any[]> {
+    const reviews: Review[] = await this.reviewModel.find({ professionalId });
+
+    let reviewsToReturn: ReviewDto[] = [];
+    const promises = await Promise.all(
+      reviews.map(async review => {
+        const client = await this.findOne(review.clientId);
+        reviewsToReturn.push(
+          new ReviewDto(
+            review.id,
+            client.name,
+            client.picture,
+            review.comment,
+            review.generalRating,
+            review.postedAt,
+          ),
+        );
+
+        return reviewsToReturn;
+      }),
+    );
+    if (promises[0]) {
+      return promises[0];
+    }
+    return [];
   }
 }

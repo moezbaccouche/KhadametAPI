@@ -9,6 +9,7 @@ import {
 } from '@nestjs/common';
 import { UsersService } from './user.service';
 import { User } from './user.interface';
+import { ProfessionalForProfileDto } from './DTOs/ProfessionalForProfile.dto';
 
 @Controller('users')
 export class UsersController {
@@ -70,5 +71,12 @@ export class UsersController {
   @Get('skill/:id')
   findProfessionalsBySkill(@Param('id') skillId: string): Promise<any> {
     return this.usersService.findProfessionalsBySkill(skillId);
+  }
+
+  @Get('professional/:id')
+  findProfessional(
+    @Param('id') id: string,
+  ): Promise<ProfessionalForProfileDto> {
+    return this.usersService.findProfessional(id);
   }
 }
