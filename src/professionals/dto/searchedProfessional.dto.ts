@@ -3,7 +3,8 @@ export class SearchedProfessionalDto {
     public id: string,
     public name: string,
     public picture: string,
-    public generalRating: number,
+    public rating: number,
     public salary: number,
+    public age: number,
   ) {}
 }

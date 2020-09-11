@@ -141,12 +141,16 @@ export class UsersService {
     return this.jwtService.signAsync({ professional: payload });
   }
 
-  async findProfessionalsBySkill(skillId: string): Promise<any> {
+  async findProfessionalsBySkill(
+    skillId: string,
+  ): Promise<SearchedProfessionalDto[]> {
     //Get all the professionalsSkills (id, salary, proId, skillId) of the searched skill
 
     const professionalSkills = await this.professionalSkillsService.findBySkill(
       skillId,
     );
+
+    console.log('PRO SKILLS', professionalSkills);
 
     let arr = [];
 
@@ -173,6 +177,7 @@ export class UsersService {
             professional.picture,
             overall === null ? 0 : parseFloat(overall),
             pSkill.salary,
+            this.calculateAge(professional.dob),
           ),
         );
 
@@ -184,6 +189,32 @@ export class UsersService {
       return promises[0];
     }
     return [];
+  }
+
+  async findBestProfessionalsForSkill(
+    skillId: string,
+  ): Promise<SearchedProfessionalDto[]> {
+    const skillProfessionals = await this.findProfessionalsBySkill(skillId);
+    const bestProfessionals = skillProfessionals.filter(
+      item => item.rating >= 4,
+    );
+
+    console.log('BEST EMPLOYEES', bestProfessionals);
+
+    //Return the array sorted by rating in descending order
+    return bestProfessionals.sort((a, b) =>
+      this.compareRatings(a.rating, b.rating),
+    );
+  }
+
+  private compareRatings(rating1: number, rating2: number) {
+    if (rating1 > rating2) {
+      return -1;
+    }
+    if (rating1 < rating2) {
+      return 1;
+    }
+    return 0;
   }
 
   async calculateSkillRating(skillRatings: SkillRating[]): Promise<any> {

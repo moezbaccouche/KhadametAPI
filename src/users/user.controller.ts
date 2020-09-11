@@ -10,6 +10,8 @@ import {
 import { UsersService } from './user.service';
 import { User } from './user.interface';
 import { ProfessionalForProfileDto } from './DTOs/ProfessionalForProfile.dto';
+import { SkillRatingDto } from 'src/skillRatings/DTOs/skillRating.dto';
+import { SearchedProfessionalDto } from 'src/professionals/dto/searchedProfessional.dto';
 
 @Controller('users')
 export class UsersController {
@@ -78,5 +80,12 @@ export class UsersController {
     @Param('id') id: string,
   ): Promise<ProfessionalForProfileDto> {
     return this.usersService.findProfessional(id);
+  }
+
+  @Get('professionals/best/skill/:id')
+  findBestProfessionalsForSkill(
+    @Param('id') skillId: string,
+  ): Promise<SearchedProfessionalDto[]> {
+    return this.usersService.findBestProfessionalsForSkill(skillId);
   }
 }
