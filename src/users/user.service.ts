@@ -249,6 +249,7 @@ export class UsersService {
             review.comment,
             review.rating,
             review.postedAt,
+            review.skillId,
           ),
         );
 
