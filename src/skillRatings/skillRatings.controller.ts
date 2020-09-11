@@ -26,6 +26,7 @@ export class SkillRatingsController {
 
   @Post()
   create(@Body() newSkillRating: SkillRating): Promise<SkillRating> {
+    console.log('NEW RATING', newSkillRating);
     return this.ratingSkillsService.create(newSkillRating);
   }
 

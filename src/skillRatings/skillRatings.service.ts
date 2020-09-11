@@ -42,4 +42,12 @@ export class SkillRatingsService {
       professionalId: professionalId,
     });
   }
+
+  async findAllRatingsForProfessional(
+    professionalId: string,
+  ): Promise<SkillRating[]> {
+    return this.skillRatingModel.find({
+      professionalId,
+    });
+  }
 }

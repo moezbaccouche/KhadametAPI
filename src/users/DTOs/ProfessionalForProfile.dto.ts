@@ -1,5 +1,6 @@
 import { SkillForProfileDto } from 'src/skills/DTOs/skillForProfile.dto';
 import { ReviewDto } from 'src/reviews/DTOs/review.dto';
+import { SkillRating } from 'src/skillRatings/skillRatings.interface';
 
 export class ProfessionalForProfileDto {
   constructor(
@@ -10,7 +11,7 @@ export class ProfessionalForProfileDto {
     public phone: string,
     public email: string,
     public age: number,
-    public reviews: ReviewDto[],
+    public reviews: SkillRating[],
     public skills?: SkillForProfileDto[],
   ) {}
 }

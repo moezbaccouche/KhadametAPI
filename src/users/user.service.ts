@@ -14,6 +14,7 @@ import { SkillForProfileDto } from 'src/skills/DTOs/skillForProfile.dto';
 import { ReviewsService } from 'src/reviews/review.service';
 import { Review } from 'src/reviews/review.interface';
 import { ReviewDto } from 'src/reviews/DTOs/review.dto';
+import { SkillRatingDto } from 'src/skillRatings/DTOs/skillRating.dto';
 
 @Injectable()
 export class UsersService {
@@ -124,6 +125,7 @@ export class UsersService {
     const arrayWithoutLoggedUser = foundProfessionals.filter(
       user => user.id !== loggedUserId,
     );
+    console.log('SEARCHED USERS', arrayWithoutLoggedUser);
     return arrayWithoutLoggedUser;
   }
 
@@ -200,19 +202,21 @@ export class UsersService {
   }
 
   async findReviewsForProfessional(professionalId: string): Promise<any[]> {
-    const reviews: Review[] = await this.reviewModel.find({ professionalId });
+    const reviews: SkillRating[] = await this.skillRatingsService.findAllRatingsForProfessional(
+      professionalId,
+    );
 
-    let reviewsToReturn: ReviewDto[] = [];
+    let reviewsToReturn: SkillRatingDto[] = [];
     const promises = await Promise.all(
       reviews.map(async review => {
         const client = await this.findOne(review.clientId);
         reviewsToReturn.push(
-          new ReviewDto(
+          new SkillRatingDto(
             review.id,
             client.name,
             client.picture,
             review.comment,
-            review.generalRating,
+            review.rating,
             review.postedAt,
           ),
         );
