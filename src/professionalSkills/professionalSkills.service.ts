@@ -2,9 +2,6 @@ import { Injectable, Param, Get } from '@nestjs/common';
 import { ProfessionalSkill } from './professionalSkills.interface';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Professional } from 'src/professionals/professional.interface';
-import { SearchedProfessionalDto } from 'src/professionals/dto/searchedProfessional.dto';
-import { ProfessionalsService } from 'src/professionals/professional.service';
 
 @Injectable()
 export class ProfessionalSkillsService {

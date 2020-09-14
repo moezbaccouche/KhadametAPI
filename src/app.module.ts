@@ -2,8 +2,6 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
-import { ClientsModule } from './clients/clients.module';
-import { ProfessionalsModule } from './professionals/professional.module';
 import config from './config/keys';
 import { RequestsModule } from './requests/request.module';
 import { ConfigModule } from '@nestjs/config';
@@ -15,11 +13,8 @@ import { SkillRatingsModule } from './skillRatings/skillRatings.module';
 
 @Module({
   imports: [
-    ClientsModule,
-    ProfessionalsModule,
     UsersModule,
     RequestsModule,
-    ReviewsModule,
     ProfessionalSkillsModule,
     SkillsModule,
     SkillRatingsModule,

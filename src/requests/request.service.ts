@@ -19,6 +19,7 @@ export class RequestsService {
   }
 
   async create(request: Request): Promise<Request> {
+    console.log('REQUEST', request);
     const newRequest = new this.requestModel(request);
     return await newRequest.save();
   }

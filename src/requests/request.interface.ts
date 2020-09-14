@@ -1,10 +1,11 @@
 export interface Request {
   id?: string;
-  category: string;
+  clientId: string;
+  skillId: string;
+  professionalId: string;
   date: Date;
-  time: Date;
   address: string;
-  description?: string;
   status: number;
-  creationTime: Date;
+  createdAt: Date;
+  description?: string;
 }

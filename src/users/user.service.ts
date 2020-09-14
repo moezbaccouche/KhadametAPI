@@ -6,7 +6,6 @@ import { JwtService } from '@nestjs/jwt';
 import { User } from './user.interface';
 import { ProfessionalSkillsService } from 'src/professionalSkills/professionalSkills.service';
 import { SkillRatingsService } from 'src/skillRatings/skillRatings.service';
-import { SearchedProfessionalDto } from 'src/professionals/dto/searchedProfessional.dto';
 import { SkillRating } from 'src/skillRatings/skillRatings.interface';
 import { UserRole } from './user.roles';
 import { ProfessionalForProfileDto } from './DTOs/ProfessionalForProfile.dto';
@@ -15,12 +14,12 @@ import { ReviewsService } from 'src/reviews/review.service';
 import { Review } from 'src/reviews/review.interface';
 import { ReviewDto } from 'src/reviews/DTOs/review.dto';
 import { SkillRatingDto } from 'src/skillRatings/DTOs/skillRating.dto';
+import { SearchedProfessionalDto } from './DTOs/searchedProfessional.dto';
 
 @Injectable()
 export class UsersService {
   constructor(
     @InjectModel('User') private readonly userModel: Model<User>,
-    @InjectModel('Review') private readonly reviewModel: Model<Review>,
     private readonly jwtService: JwtService,
     private readonly professionalSkillsService: ProfessionalSkillsService,
     private readonly skillRatingsService: SkillRatingsService,

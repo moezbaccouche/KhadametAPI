@@ -11,7 +11,7 @@ import { UsersService } from './user.service';
 import { User } from './user.interface';
 import { ProfessionalForProfileDto } from './DTOs/ProfessionalForProfile.dto';
 import { SkillRatingDto } from 'src/skillRatings/DTOs/skillRating.dto';
-import { SearchedProfessionalDto } from 'src/professionals/dto/searchedProfessional.dto';
+import { SearchedProfessionalDto } from './DTOs/searchedProfessional.dto';
 
 @Controller('users')
 export class UsersController {
