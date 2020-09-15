@@ -67,6 +67,7 @@ export class UsersService {
         const skill = new SkillForProfileDto(
           pSkill.skillId,
           parseFloat(overall !== null ? overall : 0),
+          pSkill.salary,
         );
         skillsToReturn.push(skill);
         return skillsToReturn;
