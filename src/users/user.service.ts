@@ -15,6 +15,7 @@ import { Review } from 'src/reviews/review.interface';
 import { ReviewDto } from 'src/reviews/DTOs/review.dto';
 import { SkillRatingDto } from 'src/skillRatings/DTOs/skillRating.dto';
 import { SearchedProfessionalDto } from './DTOs/searchedProfessional.dto';
+import { UserDto } from './DTOs/user.dto';
 
 @Injectable()
 export class UsersService {
@@ -29,8 +30,18 @@ export class UsersService {
     return await this.userModel.find();
   }
 
-  async findOne(id: string): Promise<User> {
-    return await this.userModel.findOne({ _id: id });
+  async findOne(id: string): Promise<UserDto> {
+    const user = await this.userModel.findOne({ _id: id });
+    const userToReturn = new UserDto(
+      user.id,
+      user.name,
+      user.picture,
+      user.address,
+      user.dob,
+      user.phone,
+      user.role,
+    );
+    return userToReturn;
   }
 
   //The next function must be optimized
@@ -111,7 +122,10 @@ export class UsersService {
   }
 
   async update(id: string, user: User): Promise<User> {
-    return await this.userModel.findByIdAndUpdate(id, user, { new: true });
+    return await this.userModel.findByIdAndUpdate(id, user, {
+      new: true,
+      useFindAndModify: false,
+    });
   }
 
   async search(searchString: string, loggedUserId: string): Promise<User[]> {

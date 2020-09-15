@@ -6,12 +6,14 @@ import {
   Body,
   Delete,
   Put,
+  Patch,
 } from '@nestjs/common';
 import { UsersService } from './user.service';
 import { User } from './user.interface';
 import { ProfessionalForProfileDto } from './DTOs/ProfessionalForProfile.dto';
 import { SkillRatingDto } from 'src/skillRatings/DTOs/skillRating.dto';
 import { SearchedProfessionalDto } from './DTOs/searchedProfessional.dto';
+import { UserDto } from './DTOs/user.dto';
 
 @Controller('users')
 export class UsersController {
@@ -23,8 +25,11 @@ export class UsersController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string): Promise<User> {
-    return this.usersService.findOne(id);
+  findOne(@Param('id') id: string): Promise<UserDto> {
+    const user = this.usersService.findOne(id);
+
+    console.log('USER', user);
+    return user;
   }
 
   @Get('/email/:email')
@@ -42,7 +47,7 @@ export class UsersController {
     return this.usersService.delete(id);
   }
 
-  @Put(':id')
+  @Patch(':id')
   update(@Param('id') id: string, @Body() updateUser: User): Promise<User> {
     return this.usersService.update(id, updateUser);
   }

@@ -56,17 +56,30 @@ export class ProfessionalSkillsService {
     );
   }
 
-  @Get('skill/:id')
-  async findBySkill(
-    @Param('id') skillId: string,
-  ): Promise<ProfessionalSkill[]> {
+  async findBySkill(skillId: string): Promise<ProfessionalSkill[]> {
     return await this.professionalSkillModel.find({ skillId });
   }
 
-  @Get('professional/:id')
   async findByProfessional(
-    @Param('id') professionalId: string,
+    professionalId: string,
   ): Promise<ProfessionalSkill[]> {
     return await this.professionalSkillModel.find({ professionalId });
+  }
+
+  async updateProfessionalSkills(
+    professionalSkills: ProfessionalSkill[],
+    professionalId: string,
+  ): Promise<ProfessionalSkill[]> {
+    await this.professionalSkillModel.deleteMany({
+      professionalId,
+    });
+
+    professionalSkills.map(skill => {
+      console.log('SKILL', skill);
+      skill.professionalId = professionalId;
+      skill.skillId = skill.id;
+    });
+
+    return await this.professionalSkillModel.insertMany(professionalSkills);
   }
 }

@@ -30,7 +30,6 @@ export class ProfessionalSkillsController {
   create(
     @Body() newProfessionalSkill: ProfessionalSkill,
   ): Promise<ProfessionalSkill> {
-    console.log('REACHED');
     return this.professionalSkillsService.create(newProfessionalSkill);
   }
 
@@ -56,5 +55,34 @@ export class ProfessionalSkillsController {
     @Body() updateProfessionalSkill: ProfessionalSkill,
   ): Promise<ProfessionalSkill> {
     return this.professionalSkillsService.update(id, updateProfessionalSkill);
+  }
+
+  @Get('skill/:id')
+  async findBySkill(
+    @Param('id') skillId: string,
+  ): Promise<ProfessionalSkill[]> {
+    return await this.professionalSkillsService.findBySkill(skillId);
+  }
+
+  @Get('professional/:id')
+  async findByProfessional(
+    @Param('id') professionalId: string,
+  ): Promise<ProfessionalSkill[]> {
+    return await this.professionalSkillsService.findByProfessional(
+      professionalId,
+    );
+  }
+
+  @Post('update')
+  updateSkills(
+    @Body('skills') newProfessionalSkills: ProfessionalSkill[],
+    @Body('professionalId') professionalId: string,
+  ): Promise<ProfessionalSkill[]> {
+    console.log('CTRL SKILLS', newProfessionalSkills);
+    console.log('CTRL ID', professionalId);
+    return this.professionalSkillsService.updateProfessionalSkills(
+      newProfessionalSkills,
+      professionalId,
+    );
   }
 }
