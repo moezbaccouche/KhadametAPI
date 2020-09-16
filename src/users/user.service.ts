@@ -32,6 +32,7 @@ export class UsersService {
 
   async findOne(id: string): Promise<UserDto> {
     const user = await this.userModel.findOne({ _id: id });
+
     const userToReturn = new UserDto(
       user.id,
       user.name,
@@ -121,11 +122,22 @@ export class UsersService {
     return await this.userModel.findByIdAndRemove(id);
   }
 
-  async update(id: string, user: User): Promise<User> {
-    return await this.userModel.findByIdAndUpdate(id, user, {
+  async update(id: string, updatedUser: User): Promise<UserDto> {
+    const user = await this.userModel.findByIdAndUpdate(id, updatedUser, {
       new: true,
       useFindAndModify: false,
     });
+
+    const userToReturn = new UserDto(
+      user.id,
+      user.name,
+      user.picture,
+      user.address,
+      user.dob,
+      user.phone,
+      user.role,
+    );
+    return userToReturn;
   }
 
   async search(searchString: string, loggedUserId: string): Promise<User[]> {

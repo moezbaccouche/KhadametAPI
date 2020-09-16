@@ -26,10 +26,7 @@ export class UsersController {
 
   @Get(':id')
   findOne(@Param('id') id: string): Promise<UserDto> {
-    const user = this.usersService.findOne(id);
-
-    console.log('USER', user);
-    return user;
+    return this.usersService.findOne(id);
   }
 
   @Get('/email/:email')
@@ -48,7 +45,7 @@ export class UsersController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateUser: User): Promise<User> {
+  update(@Param('id') id: string, @Body() updateUser: User): Promise<UserDto> {
     return this.usersService.update(id, updateUser);
   }
 
