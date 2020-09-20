@@ -12,5 +12,6 @@ import { ProfessionalSkillSchema } from './professionalSkills.schema';
   ],
   controllers: [ProfessionalSkillsController],
   providers: [ProfessionalSkillsService],
+  exports: [ProfessionalSkillsService],
 })
 export class ProfessionalSkillsModule {}

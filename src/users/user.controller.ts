@@ -81,6 +81,7 @@ export class UsersController {
   findProfessional(
     @Param('id') id: string,
   ): Promise<ProfessionalForProfileDto> {
+    console.log('REACHED');
     return this.usersService.findProfessional(id);
   }
 

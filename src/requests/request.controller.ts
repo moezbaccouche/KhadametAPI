@@ -6,9 +6,11 @@ import {
   Put,
   Param,
   Body,
+  Patch,
 } from '@nestjs/common';
 import { RequestsService } from './request.service';
 import { Request } from './request.interface';
+import { RequestDto } from './DTOs/pendingRequest.dto';
 
 @Controller('requests')
 export class RequestsController {
@@ -34,11 +36,44 @@ export class RequestsController {
     return this.requestsService.delete(id);
   }
 
-  @Put(':id')
+  @Patch(':id')
   update(
     @Param('id') id: string,
     @Body() updateRequest: Request,
   ): Promise<Request> {
+    console.log(updateRequest);
     return this.requestsService.update(id, updateRequest);
+  }
+
+  @Get('pending/:id')
+  findPendingRequestsForProfessional(
+    @Param('id') professionalId: string,
+  ): Promise<RequestDto[]> {
+    return this.requestsService.findPendingRequestsForProfessional(
+      professionalId,
+    );
+  }
+
+  @Get('accepted/:id')
+  findAcceptedRequestsForProfessional(
+    @Param('id') professionalId: string,
+  ): Promise<RequestDto[]> {
+    return this.requestsService.findAcceptedRequestsForProfessional(
+      professionalId,
+    );
+  }
+
+  @Get('treated/:id')
+  findAcceptedTreatedForProfessional(
+    @Param('id') professionalId: string,
+  ): Promise<RequestDto[]> {
+    return this.requestsService.findTreatedRequestsForProfessional(
+      professionalId,
+    );
+  }
+
+  @Get('clients/:id')
+  findClientRequests(@Param('id') clientId: string): Promise<RequestDto[]> {
+    return this.requestsService.findClientRequests(clientId);
   }
 }

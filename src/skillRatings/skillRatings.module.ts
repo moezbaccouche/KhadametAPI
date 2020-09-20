@@ -12,5 +12,6 @@ import { SkillRatingSchema } from './skillRatings.schema';
   ],
   controllers: [SkillRatingsController],
   providers: [SkillRatingsService],
+  exports: [SkillRatingsService],
 })
 export class SkillRatingsModule {}
