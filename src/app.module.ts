@@ -10,6 +10,9 @@ import { ProfessionalSkillsModule } from './professionalSkills/professionalSkill
 import { SkillsModule } from './skills/skill.module';
 import { UsersModule } from './users/user.module';
 import { SkillRatingsModule } from './skillRatings/skillRatings.module';
+import { ChatGateway } from './chat/chat.gateway';
+import { AlertGateway } from './alert/alert.gateway';
+import { AlertController } from './alert/alert.controller';
 
 @Module({
   imports: [
@@ -21,7 +24,7 @@ import { SkillRatingsModule } from './skillRatings/skillRatings.module';
     MongooseModule.forRoot(config.MongoURI),
     ConfigModule.forRoot(),
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [AlertController],
+  providers: [ChatGateway, AlertGateway],
 })
 export class AppModule {}
