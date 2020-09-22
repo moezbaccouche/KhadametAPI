@@ -10,9 +10,12 @@ import { ProfessionalSkillsModule } from './professionalSkills/professionalSkill
 import { SkillsModule } from './skills/skill.module';
 import { UsersModule } from './users/user.module';
 import { SkillRatingsModule } from './skillRatings/skillRatings.module';
-import { ChatGateway } from './chat/chat.gateway';
+import { ChatGateway } from './messages/chat.gateway';
 import { AlertGateway } from './alert/alert.gateway';
 import { AlertController } from './alert/alert.controller';
+import { MessagesModule } from './messages/message.module';
+import { ConversationsModule } from './conversations/conversation.module';
+import { ConversationMessagesModule } from './conversationMessages/conversationMessages.module';
 
 @Module({
   imports: [
@@ -21,6 +24,9 @@ import { AlertController } from './alert/alert.controller';
     ProfessionalSkillsModule,
     SkillsModule,
     SkillRatingsModule,
+    MessagesModule,
+    ConversationsModule,
+    ConversationMessagesModule,
     MongooseModule.forRoot(config.MongoURI),
     ConfigModule.forRoot(),
   ],

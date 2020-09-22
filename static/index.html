@@ -54,7 +54,8 @@
             typescript: [],
             nestjs: []
           },
-          socket: {chat: null, alert: null},
+          // socket: {chat: null, alert: null},
+          socket: null,
           alerts:[],
           activeRoom: 'general',
           rooms: {
@@ -67,7 +68,7 @@
         methods : {
           sendChatMessage() {
             if (this.isMemberOfActiveRoom) {
-              this.socket.chat.emit('chatToServer', { sender: this.username, room: this.activeRoom, message: this.text });
+              this.socket.emit('chatToServer', { sender: this.username, room: this.activeRoom, message: this.text });
               this.text = "";
             } else {
               alert('You must join the room before sending messages!');
@@ -81,9 +82,9 @@
           },
           toggleRoomMembership() {
             if (this.isMemberOfActiveRoom) {
-              this.socket.chat.emit('leaveRoom', this.activeRoom);
+              this.socket.emit('leaveRoom', this.activeRoom);
             } else {
-              this.socket.chat.emit('joinRoom', this.activeRoom);
+              this.socket.emit('joinRoom', this.activeRoom);
             }
           }
         },
@@ -93,26 +94,28 @@
           }
         },
         created() {
-          this.username = prompt('Enter your username:');
+          // this.username = "prompt('Enter your username:')";
+          this.username = "Moez";
 
-          this.socket.chat = io('http://localhost:3000/chat');
-          this.socket.chat.on('chatToClient', (msg) => {
+          // this.socket.chat = io('http://localhost:3000/chat');
+          this.socket = io('http://localhost:3000');
+          this.socket.on('chatToClient', (msg) => {
             this.receiveChatMessage(msg);
           });
-          this.socket.chat.on('connect', () => {
+          this.socket.on('connect', () => {
             this.toggleRoomMembership();
           });
-          this.socket.chat.on('joinedRoom', (room) => {
+          this.socket.on('joinedRoom', (room) => {
             this.rooms[room] = true;
           });
-          this.socket.chat.on('leftRoom', (room) => {
+          this.socket.on('leftRoom', (room) => {
             this.rooms[room] = false;
           });
 
-          this.socket.alert = io('http://localhost:3000/alert');
-          this.socket.alert.on('alertToClient', (msg) => {
-            this.receiveAlertMessage(msg);
-          });
+          // this.socket.alert = io('http://localhost:3000/alert');
+          // this.socket.alert.on('alertToClient', (msg) => {
+          //   this.receiveAlertMessage(msg);
+          // });
         }
       })
     </script>
