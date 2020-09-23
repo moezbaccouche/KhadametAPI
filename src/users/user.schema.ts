@@ -8,4 +8,5 @@ export const UserSchema = new mongoose.Schema({
   password: String,
   picture: String,
   role: Number,
+  playerId: String,
 });

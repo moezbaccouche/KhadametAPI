@@ -41,6 +41,7 @@ export class UsersService {
       user.dob,
       user.phone,
       user.role,
+      user.playerId,
     );
     return userToReturn;
   }
@@ -95,7 +96,7 @@ export class UsersService {
       professional.email,
       this.calculateAge(professional.dob),
       reviews,
-      skillsToReturn,
+      professional.playerId,
     );
 
     return professionalToReturn;
@@ -123,6 +124,7 @@ export class UsersService {
   }
 
   async update(id: string, updatedUser: User): Promise<UserDto> {
+    console.log('ID', id);
     const user = await this.userModel.findByIdAndUpdate(id, updatedUser, {
       new: true,
       useFindAndModify: false,
@@ -136,6 +138,7 @@ export class UsersService {
       user.dob,
       user.phone,
       user.role,
+      user.playerId,
     );
     return userToReturn;
   }
@@ -151,7 +154,6 @@ export class UsersService {
     const arrayWithoutLoggedUser = foundProfessionals.filter(
       user => user.id !== loggedUserId,
     );
-    console.log('SEARCHED USERS', arrayWithoutLoggedUser);
     return arrayWithoutLoggedUser;
   }
 
@@ -176,14 +178,11 @@ export class UsersService {
       skillId,
     );
 
-    console.log('PRO SKILLS', professionalSkills);
-
     let arr = [];
 
     const promises = await Promise.all(
       professionalSkills.map(async pSkill => {
         const professional = await this.findOne(pSkill.professionalId);
-
         const skillRatings = await this.skillRatingsService.findSkillRatingsForProfessional(
           pSkill.skillId,
           pSkill.professionalId,
@@ -204,13 +203,13 @@ export class UsersService {
             overall === null ? 0 : parseFloat(overall),
             pSkill.salary,
             this.calculateAge(professional.dob),
+            professional.playerId,
           ),
         );
 
         return arr;
       }),
     );
-    console.log(promises[0]);
     if (promises[0]) {
       return promises[0];
     }
@@ -224,8 +223,6 @@ export class UsersService {
     const bestProfessionals = skillProfessionals.filter(
       item => item.rating >= 4,
     );
-
-    console.log('BEST EMPLOYEES', bestProfessionals);
 
     //Return the array sorted by rating in descending order
     return bestProfessionals.sort((a, b) =>

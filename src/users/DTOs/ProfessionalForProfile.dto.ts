@@ -12,6 +12,7 @@ export class ProfessionalForProfileDto {
     public email: string,
     public age: number,
     public reviews: SkillRating[],
+    public playerId: string,
     public skills?: SkillForProfileDto[],
   ) {}
 }

@@ -6,5 +6,6 @@ export class SearchedProfessionalDto {
     public rating: number,
     public salary: number,
     public age: number,
+    public playerId: string,
   ) {}
 }

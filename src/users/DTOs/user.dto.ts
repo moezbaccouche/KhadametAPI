@@ -7,5 +7,6 @@ export class UserDto {
     public dob: Date,
     public phone: string,
     public role: number,
+    public playerId?: string,
   ) {}
 }

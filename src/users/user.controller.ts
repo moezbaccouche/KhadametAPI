@@ -73,7 +73,9 @@ export class UsersController {
   }
 
   @Get('skill/:id')
-  findProfessionalsBySkill(@Param('id') skillId: string): Promise<any> {
+  findProfessionalsBySkill(
+    @Param('id') skillId: string,
+  ): Promise<SearchedProfessionalDto[]> {
     return this.usersService.findProfessionalsBySkill(skillId);
   }
 
