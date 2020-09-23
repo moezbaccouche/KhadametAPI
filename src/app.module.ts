@@ -16,6 +16,7 @@ import { AlertController } from './alert/alert.controller';
 import { MessagesModule } from './messages/message.module';
 import { ConversationsModule } from './conversations/conversation.module';
 import { ConversationMessagesModule } from './conversationMessages/conversationMessages.module';
+import { NotificationsModule } from './notifications/notification.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { ConversationMessagesModule } from './conversationMessages/conversationM
     MessagesModule,
     ConversationsModule,
     ConversationMessagesModule,
+    NotificationsModule,
     MongooseModule.forRoot(config.MongoURI),
     ConfigModule.forRoot(),
   ],
