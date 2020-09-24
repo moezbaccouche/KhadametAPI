@@ -61,7 +61,7 @@ export class UsersService {
     console.log(reviews);
 
     const skillsToReturn: SkillForProfileDto[] = [];
-    const promises = await Promise.all(
+    await Promise.all(
       professionalSkills.map(async pSkill => {
         const skillRatings = await this.skillRatingsService.findSkillRatingsForProfessional(
           pSkill.skillId,
@@ -83,7 +83,6 @@ export class UsersService {
           pSkill.salary,
         );
         skillsToReturn.push(skill);
-        return skillsToReturn;
       }),
     );
 
@@ -97,6 +96,7 @@ export class UsersService {
       this.calculateAge(professional.dob),
       reviews,
       professional.playerId,
+      skillsToReturn,
     );
 
     return professionalToReturn;
@@ -124,7 +124,6 @@ export class UsersService {
   }
 
   async update(id: string, updatedUser: User): Promise<UserDto> {
-    console.log('ID', id);
     const user = await this.userModel.findByIdAndUpdate(id, updatedUser, {
       new: true,
       useFindAndModify: false,

@@ -31,7 +31,9 @@ export class NotificationsService {
   async findUserReceivedNotification(
     id: string,
   ): Promise<ReceivedNotificationDto[]> {
-    const notifications = await this.notificationModel.find({ receiverId: id });
+    const notifications = await this.notificationModel
+      .find({ receiverId: id })
+      .sort({ createdAt: -1 });
     const notificationsToReturn: ReceivedNotificationDto[] = [];
 
     await Promise.all(
