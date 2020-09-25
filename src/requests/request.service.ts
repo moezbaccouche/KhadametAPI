@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Request } from './request.interface';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { RequestDto } from './DTOs/pendingRequest.dto';
+import { RequestDto } from './DTOs/request.dto';
 import { User } from 'src/users/user.interface';
 import { UsersService } from 'src/users/user.service';
 import { RequestStatus } from './request.status';
@@ -33,12 +33,36 @@ export class RequestsService {
     return await this.requestModel.findByIdAndRemove(id);
   }
 
-  async update(id: string, request: Request): Promise<Request> {
+  async update(id: string, request: Request): Promise<RequestDto> {
     console.log('updatedRequest:', request);
-    return await this.requestModel.findByIdAndUpdate(id, request, {
-      useFindAndModify: false,
-      new: true,
-    });
+
+    const updatedRequest: Request = await this.requestModel.findByIdAndUpdate(
+      id,
+      request,
+      {
+        useFindAndModify: false,
+        new: true,
+      },
+    );
+
+    const professional = await this.usersService.findProfessional(
+      updatedRequest.professionalId,
+    );
+
+    const client = await this.usersService.findOne(updatedRequest.clientId);
+
+    const requestToReturn = new RequestDto(
+      updatedRequest.id,
+      updatedRequest.skillId,
+      client,
+      updatedRequest.date,
+      updatedRequest.address,
+      updatedRequest.status,
+      updatedRequest.createdAt,
+      updatedRequest.description,
+      professional,
+    );
+    return requestToReturn;
   }
 
   async findPendingRequestsForProfessional(

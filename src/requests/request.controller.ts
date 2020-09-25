@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { RequestsService } from './request.service';
 import { Request } from './request.interface';
-import { RequestDto } from './DTOs/pendingRequest.dto';
+import { RequestDto } from './DTOs/request.dto';
 
 @Controller('requests')
 export class RequestsController {
@@ -40,7 +40,7 @@ export class RequestsController {
   update(
     @Param('id') id: string,
     @Body() updateRequest: Request,
-  ): Promise<Request> {
+  ): Promise<RequestDto> {
     console.log(updateRequest);
     return this.requestsService.update(id, updateRequest);
   }
