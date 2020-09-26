@@ -38,4 +38,12 @@ export class ConversationsController {
   findUserConversations(@Param('id') id: string): Promise<Conversation[]> {
     return this.conversationsService.findUserConversations(id);
   }
+
+  @Get('users/:senderId/:receiverId')
+  conversationExists(
+    @Param('senderId') senderId: string,
+    @Param('receiverId') receiverId: string,
+  ): Promise<{ exists: boolean; conversationId?: string }> {
+    return this.conversationsService.conversationExists(senderId, receiverId);
+  }
 }

@@ -32,4 +32,27 @@ export class ConversationsService {
       $or: [{ conversationCreatorId: id }, { conversationReceiverId: id }],
     });
   }
+
+  async conversationExists(
+    senderId: string,
+    receiverId: string,
+  ): Promise<{ exists: boolean; conversationId?: string }> {
+    const conversation = await this.conversationModel.findOne({
+      $or: [
+        {
+          conversationCreatorId: senderId,
+          conversationReceiverId: receiverId,
+        },
+        {
+          conversationCreatorId: receiverId,
+          conversationReceiverId: senderId,
+        },
+      ],
+    });
+
+    if (conversation) {
+      return { exists: true, conversationId: conversation._id };
+    }
+    return { exists: false };
+  }
 }
