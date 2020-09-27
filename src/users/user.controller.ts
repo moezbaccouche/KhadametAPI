@@ -60,16 +60,20 @@ export class UsersController {
   @Post('login')
   async login(
     @Body() credentials: { email: string; password: string },
-  ): Promise<{ token: string; correctCredentials: boolean }> {
+  ): Promise<{ userId: string; token: string; correctCredentials: boolean }> {
     console.log(credentials.email);
-    const token = await this.usersService.login(
+    const signedUser = await this.usersService.login(
       credentials.email,
       credentials.password,
     );
-    if (token) {
-      return { token: token, correctCredentials: true };
+    if (signedUser) {
+      return {
+        userId: signedUser.id,
+        token: signedUser.token,
+        correctCredentials: true,
+      };
     }
-    return { token: null, correctCredentials: false };
+    return { userId: null, token: null, correctCredentials: false };
   }
 
   @Get('skill/:id')

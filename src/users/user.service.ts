@@ -143,23 +143,30 @@ export class UsersService {
   }
 
   async search(searchString: string, loggedUserId: string): Promise<User[]> {
-    const foundProfessionals: User[] = await this.userModel
-      .find({
-        name: { $regex: searchString, $options: 'i' },
-        role: 2,
-      })
-      .sort({ name: 'ascending' });
+    try {
+      const foundProfessionals: User[] = await this.userModel
+        .find({
+          name: { $regex: searchString, $options: 'i' },
+          role: 2,
+        })
+        .sort({ name: 'ascending' });
 
-    const arrayWithoutLoggedUser = foundProfessionals.filter(
-      user => user.id !== loggedUserId,
-    );
-    return arrayWithoutLoggedUser;
+      const arrayWithoutLoggedUser = foundProfessionals.filter(
+        user => user.id !== loggedUserId,
+      );
+      return arrayWithoutLoggedUser;
+    } catch (exception) {
+      return [];
+    }
   }
 
-  async login(email: string, password: string): Promise<string> {
+  async login(
+    email: string,
+    password: string,
+  ): Promise<{ id: string; token: string } | null> {
     const user = await this.userModel.findOne({ email: email });
     if (user && (await bcrypt.compare(password, user.password))) {
-      return this.generateJWT(user);
+      return { id: user._id, token: await this.generateJWT(user) };
     }
     return null;
   }
