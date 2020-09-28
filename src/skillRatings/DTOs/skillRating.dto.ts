@@ -5,7 +5,6 @@ export class SkillRatingDto {
     public clientPicture: string,
     public comment: string,
     public rating: number,
-
     public postedAt: Date,
     public skillId?: string,
   ) {}

@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import * as mongoose from 'mongoose';
 import { ConversationsService } from 'src/conversations/conversation.service';
 import { UserDto } from 'src/users/DTOs/user.dto';
 import { UsersService } from 'src/users/user.service';
@@ -66,6 +65,7 @@ export class MessagesService {
             creator.id,
             creator.name,
             creator.picture,
+            creator.playerId,
           );
         }
 
@@ -74,6 +74,7 @@ export class MessagesService {
             receiver.id,
             receiver.name,
             receiver.picture,
+            receiver.playerId,
           );
         }
 

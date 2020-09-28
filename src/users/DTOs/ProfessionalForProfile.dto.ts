@@ -1,5 +1,4 @@
 import { SkillForProfileDto } from 'src/skills/DTOs/skillForProfile.dto';
-import { ReviewDto } from 'src/reviews/DTOs/review.dto';
 import { SkillRating } from 'src/skillRatings/skillRatings.interface';
 
 export class ProfessionalForProfileDto {

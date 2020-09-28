@@ -3,7 +3,6 @@ import { Request } from './request.interface';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { RequestDto } from './DTOs/request.dto';
-import { User } from 'src/users/user.interface';
 import { UsersService } from 'src/users/user.service';
 import { RequestStatus } from './request.status';
 

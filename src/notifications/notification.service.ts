@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { SimpleUserDto } from 'src/users/DTOs/simpleUser.dto';
-import { UserDto } from 'src/users/DTOs/user.dto';
 import { UsersService } from 'src/users/user.service';
 import { ReceivedNotificationDto } from './DTOs/receivedNotification.dto';
 import { Notification } from './notification.interface';
