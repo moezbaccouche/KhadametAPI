@@ -23,10 +23,6 @@ export class UsersService {
     private readonly skillRatingsService: SkillRatingsService,
   ) {}
 
-  async findAll(): Promise<User[]> {
-    return await this.userModel.find();
-  }
-
   async findOne(id: string): Promise<UserDto> {
     const user = await this.userModel.findOne({ _id: id });
 
